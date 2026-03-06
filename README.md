@@ -1,3 +1,14 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
+
+- [Setup](#setup)
+- [Subscribing to an event](#subscribing-to-an-event)
+- [Unsubscribing from an event](#unsubscribing-from-an-event)
+- [Disclaimer](#disclaimer)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Direct Announcer Bot
 
 Tired of missing Nintendo's super short notice Directs and Pokémon Presents events and
