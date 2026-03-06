@@ -1,3 +1,5 @@
+# Direct Announcer Bot
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**
@@ -8,8 +10,6 @@
 - [Disclaimer](#disclaimer)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# Direct Announcer Bot
 
 Tired of missing Nintendo's super short notice Directs and Pokémon Presents events and
 then getting spoiled to hell and back on social media? Me too.
