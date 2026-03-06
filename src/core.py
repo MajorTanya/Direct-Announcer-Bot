@@ -212,7 +212,7 @@ class CoreCog(commands.Cog, name="Core"):
         )
         return None
 
-    @configure.command(name="directs-ping")
+    @configure.command(name="directs-role")
     async def configure_directs_ping_role(
         self,
         ctx: commands.Context[DirectAnnouncerBot],
@@ -296,7 +296,7 @@ class CoreCog(commands.Cog, name="Core"):
         )
         return None
 
-    @configure.command(name="pokemon-ping")
+    @configure.command(name="pokemon-role")
     async def configure_pokemon_ping_role(
         self,
         ctx: commands.Context[DirectAnnouncerBot],

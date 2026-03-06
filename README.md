@@ -43,9 +43,9 @@ event starts.
 3. Configure the channel the bot should use for notifications with `/configure channel`
 4. Configure the notifications you'd like to enable
     - `/configure directs` - enable/disable notifications for Nintendo Directs
-    - `/configure directs-ping` - set the role the bot should ping for Nintendo Directs
+    - `/configure directs-role` - set the role the bot should ping for Nintendo Directs
     - `/configure pokemon` - enable/disable notifications for Pokémon Presents
-    - `/configure pokemon-ping` - set the role the bot should ping for Pokémon
+    - `/configure pokemon-role` - set the role the bot should ping for Pokémon
       Presents
 5. Tell your users use the `/subscribe` & `/unsubscribe` commands as shown below.
 
