@@ -21,7 +21,7 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          source: "pyproject.toml,requirements.txt,*.py"
+          source: "pyproject.toml,requirements.txt,*.py,src/*.py,src/**/*.py"
           target: ${{ secrets.TARGET_PATH }}
 
       - name: Update dependencies
