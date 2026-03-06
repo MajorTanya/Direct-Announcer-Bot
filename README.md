@@ -15,10 +15,10 @@ tab_, where the presentation should be the first video, or at the very least a v
 very high up in the list (e.g. the Pokémon YouTube Channel often schedules a lot of live
 streams regarding regional tournaments, etc.).
 
-[^1]:
-Specifically, [Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_Presents)
-for Pokémon Presents events and
-[Sunappu's Nintendo Direct countdown](https://nintendodirect.sunappu.net/en) for
+[^1]: Specifically,
+[Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_Presents) for Pokémon
+Presents events
+and [Sunappu's Nintendo Direct countdown](https://nintendodirect.sunappu.net/en) for
 Nintendo Direct events.
 
 [^2]: Exact timing is subject to change, but it will always be _before_ the actual
