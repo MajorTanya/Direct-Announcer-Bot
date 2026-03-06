@@ -44,4 +44,4 @@ jobs:
           script: |
             source ~/.nvm/nvm.sh
             nvm use --lts
-            pm2 restart DirectAnnouncerBot --time
+            PM2_SILENT=true pm2 restart DirectAnnouncerBot --time
