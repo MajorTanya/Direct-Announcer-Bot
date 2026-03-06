@@ -20,7 +20,7 @@ audioop-lts==0.2.2
     # via discord-py
 beautifulsoup4==4.14.3
     # via DirectAnnouncerBot (pyproject.toml)
-black==26.1.0
+black==26.3.0
     # via DirectAnnouncerBot (pyproject.toml)
 cfgv==3.5.0
     # via pre-commit
