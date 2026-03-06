@@ -38,24 +38,16 @@ event starts.
 
 1. [Invite the bot to your server](https://discord.com/oauth2/authorize?client_id=1476649795014627380)
 2. Allow the `Manage Roles` permission
-    - required because the bot needs to assign/remove the ping roles to/from users via
-      the `/subscribe`/`/unsubscribe` commands
-3. Configure the bot with the `configure` commands (Slash Commands)
-    1. `/configure channel` -- which channel the bot should ping users in
-4. Set up the notifications you wish to enable:
-
-    - Nintendo Directs
-      This includes all types of Direct, including movie directs, Partner Showcases,
-      etc.
-        1. `/configure directs` -- whether to enable pings for Nintendo Directs
-        2. `/configure directs-ping` -- which role to ping for Nintendo Directs
-
-    - Pokémon Presents
-        1. `/configure pokemon` -- whether to enable pings for Pokémon Presents
-        2. `/configure pokemon-ping` -- which role to ping for Pokémon Presents
-
-5. Done! Now let your users use the `/subscribe` & `/unsubscribe` commands as shown
-   below.
+    - required because the bot needs to assign/remove the ping roles to/from users when
+      they use the `/subscribe` & `/unsubscribe` commands
+3. Configure the channel the bot should use for notifications with `/configure channel`
+4. Configure the notifications you'd like to enable
+    - `/configure directs` - enable/disable notifications for Nintendo Directs
+    - `/configure directs-ping` - set the role the bot should ping for Nintendo Directs
+    - `/configure pokemon` - enable/disable notifications for Pokémon Presents
+    - `/configure pokemon-ping` - set the role the bot should ping for Pokémon
+      Presents
+5. Tell your users use the `/subscribe` & `/unsubscribe` commands as shown below.
 
 ## Subscribing to an event
 
