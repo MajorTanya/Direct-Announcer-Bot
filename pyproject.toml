@@ -1,0 +1,60 @@
+[project]
+name = "DirectAnnouncerBot"
+description = "A Discord bot that automatically pings users for Nintendo Directs & Pokémon Presents events"
+readme = "README.md"
+version = "1.0.0"
+requires-python = ">= 3.14"
+authors = [
+    { name = "MajorTanya", email = "github@majortanya.eu" }
+]
+
+dependencies = [
+    "aiohttp==3.13.3",
+    "APScheduler==3.11.2",
+    "beautifulsoup4==4.14.3",
+    "discord.py==2.7.1",
+    "python-dotenv==1.2.2"
+]
+
+[project.optional-dependencies]
+dev = [
+    "black==26.1.0",
+    "isort==8.0.1",
+    "pyright==1.1.408",
+    "pre-commit==4.5.1"
+]
+
+## ------ BLACK -------
+
+[tool.black]
+target-version = ['py314']
+
+## ------ ISORT -------
+
+[tool.isort]
+profile = "black"
+py_version = 314
+
+## ----- PYRIGHT ------
+
+[tool.pyright]
+pythonVersion = "3.14"
+ignore = [".local", ".logs", ".venv"]
+venvPath = "."
+venv = ".venv"
+
+typeCheckingMode = "strict"
+# enable some non-default rules
+deprecateTypingAliases = true
+reportCallInDefaultInitializer = "error"
+reportImplicitOverride = "error"
+reportImplicitStringConcatenation = "error"
+reportImportCycles = "error"
+reportPropertyTypeMismatch = "error"
+reportUninitializedInstanceVariable = "error"
+# disable some defaults
+reportMissingTypeStubs = "none"
+reportUnknownArgumentType = "none"
+reportUnknownLambdaType = "none"
+reportUnknownMemberType = "none"
+reportUnknownVariableType = "none"

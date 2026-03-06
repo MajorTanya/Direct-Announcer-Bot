@@ -1,0 +1,5 @@
+DEV_GUILD: int = -1
+DEV_ID: int = -1
+
+DEBUG_PING_ROLE_ID: int = -1
+DEBUG_PING_CHANNEL_ID: int = -1
