@@ -47,7 +47,7 @@ event starts.
 5. Done! Now let your users use the `/subscribe` & `/unsubscribe` commands as shown
    below.
 
-### Subscribing to an event
+## Subscribing to an event
 
 This is very simple, just use the `/subscribe` subcommand for the event you'd like to be
 pinged for:
@@ -60,7 +60,7 @@ pinged for:
 
 - `/subscribe pokemon`
 
-### Unsubscribing from an event
+## Unsubscribing from an event
 
 No longer wish to be pinged for an event? Simply use the specific `/unsubscribe`
 subcommand like this:
