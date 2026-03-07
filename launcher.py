@@ -43,6 +43,30 @@ def main() -> int:
         log_path = os.path.join(os.getcwd(), ".logs")
         if not os.path.exists(log_path):
             os.mkdir(log_path)
+        else:
+            # clean up existing log files
+            for filename in os.listdir(log_path):
+                if filename.endswith(".log"):
+                    dt = datetime.strptime(
+                        filename.removesuffix(".log"),
+                        "%Y-%m-%d_%H-%M-%S",
+                    )
+                    archive_path = os.path.join(log_path, "old")
+
+                    if not os.path.exists(archive_path):
+                        os.mkdir(archive_path)
+
+                    month_archive_path = os.path.join(
+                        archive_path,
+                        f"{dt.year}-{dt.month:02}",
+                    )
+                    if not os.path.exists(month_archive_path):
+                        os.mkdir(month_archive_path)
+
+                    os.rename(
+                        os.path.join(log_path, filename),
+                        os.path.join(month_archive_path, filename),
+                    )
 
         now_iso_safe = (
             datetime.now().isoformat(sep="_", timespec="seconds").replace(":", "-")
