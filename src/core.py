@@ -597,7 +597,7 @@ class CoreCog(commands.Cog, name="Core"):
 
         pokemon_enabled = GuildDB.get_pings_enabled(
             guild_id=ctx.guild.id,
-            event=Events.DIRECT,
+            event=Events.POKEMON,
         )
         if not pokemon_enabled:
             await ctx.reply(
@@ -610,7 +610,7 @@ class CoreCog(commands.Cog, name="Core"):
 
         role_id = GuildDB.get_ping_role(
             guild_id=ctx.guild.id,
-            event=Events.DIRECT,
+            event=Events.POKEMON,
         )
         if role_id is None:
             await ctx.reply(
