@@ -632,7 +632,7 @@ class CoreCog(commands.Cog, name="Core"):
         try:
             await ctx.author.add_roles(
                 discord.Object(id=role_id),
-                reason="Subscribed to Pokémon Present notifications",
+                reason="Subscribed to Pokémon Presents notifications",
             )
         except discord.HTTPException:
             await ctx.reply(
@@ -643,7 +643,9 @@ class CoreCog(commands.Cog, name="Core"):
             )
             return None
 
-        await ctx.reply("Successfully subscribed you to Pokémon Present notifications.")
+        await ctx.reply(
+            "Successfully subscribed you to Pokémon Presents notifications.",
+        )
         return None
 
     @commands.hybrid_group()
