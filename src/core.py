@@ -11,7 +11,7 @@ from discord.utils import format_dt
 
 from config.config_data import DEV_GUILD, DEV_ID
 from src.bot import DirectAnnouncerBot
-from src.database import GuildDB, LogDB
+from src.database import EventDB, GuildDB, LogDB
 from src.events import Events
 from src.scraping.nintendo_direct import get_next_nintendo_direct
 from src.scraping.pokemon_presents import get_next_pokemon_presents
@@ -796,6 +796,58 @@ class CoreCog(commands.Cog, name="Core"):
         await ctx.reply(
             "Successfully unsubscribed you from Pokémon Presents notifications.",
         )
+        return None
+
+    @commands.hybrid_command()
+    async def upcoming(self, ctx: commands.Context[DirectAnnouncerBot]) -> None:
+        """Show upcoming events, if any
+
+        Parameters
+        ----------
+        ctx : commands.Context[DirectAnnouncerBot]
+        """
+        if ctx.guild is None:
+            return None
+
+        now = datetime.now(UTC)
+
+        direct_dt = EventDB.get_event_timestamp(Events.DIRECT)
+        pokemon_dt = EventDB.get_event_timestamp(Events.POKEMON)
+
+        direct_msg = ""
+        if direct_dt is not None and direct_dt > now:
+            # Discord does automatic list numbering even if everything is "1."
+            direct_msg = (
+                f"1. **Nintendo Direct** on {format_dt(direct_dt, style="F")} "
+                f"({format_dt(direct_dt, style="R")})"
+            )
+
+        pokemon_msg = ""
+        if pokemon_dt is not None and pokemon_dt > now:
+            # Discord does automatic list numbering even if everything is "1."
+            pokemon_msg = (
+                f"1. **Pokémon Presents** on {format_dt(pokemon_dt, style="F")} "
+                f"({format_dt(pokemon_dt, style="R")})"
+            )
+
+        if direct_dt is not None and pokemon_dt is not None:
+            if direct_dt < pokemon_dt:
+                msg = f"{direct_msg}\n{pokemon_msg}"
+            else:
+                msg = f"{pokemon_msg}\n{direct_msg}"
+        else:
+            msg = f"{direct_msg}\n{pokemon_msg}"
+
+        if msg.strip() == "":
+            msg = "None at this time"
+
+        out = (
+            f"__Upcoming Events__\n\n"
+            f"{msg.strip()}"
+            f"\n\n-# Please note that it may take a bit for new events to be found."
+        )
+
+        await ctx.reply(out)
         return None
 
     @commands.command(hidden=True, aliases=["debug", "state"])
