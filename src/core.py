@@ -6,6 +6,7 @@ import discord
 from apscheduler.job import Job
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.date import DateTrigger
+from discord import app_commands
 from discord.ext import commands, tasks
 from discord.utils import format_dt
 
@@ -151,10 +152,12 @@ class CoreCog(commands.Cog, name="Core"):
         await self.bot.wait_until_ready()
 
     @commands.hybrid_group()
+    @app_commands.guild_only()
     async def configure(self, _: commands.Context[DirectAnnouncerBot]) -> None:
         pass
 
     @configure.command(name="channel")
+    @app_commands.guild_only()
     async def configure_channel(
         self,
         ctx: commands.Context[DirectAnnouncerBot],
@@ -213,6 +216,7 @@ class CoreCog(commands.Cog, name="Core"):
         return None
 
     @configure.command(name="directs-role")
+    @app_commands.guild_only()
     async def configure_directs_ping_role(
         self,
         ctx: commands.Context[DirectAnnouncerBot],
@@ -297,6 +301,7 @@ class CoreCog(commands.Cog, name="Core"):
         return None
 
     @configure.command(name="pokemon-role")
+    @app_commands.guild_only()
     async def configure_pokemon_ping_role(
         self,
         ctx: commands.Context[DirectAnnouncerBot],
@@ -381,6 +386,7 @@ class CoreCog(commands.Cog, name="Core"):
         return None
 
     @configure.command(name="directs")
+    @app_commands.guild_only()
     async def configure_directs(
         self,
         ctx: commands.Context[DirectAnnouncerBot],
@@ -427,6 +433,7 @@ class CoreCog(commands.Cog, name="Core"):
         return None
 
     @configure.command(name="pokemon")
+    @app_commands.guild_only()
     async def configure_pokemon(
         self,
         ctx: commands.Context[DirectAnnouncerBot],
@@ -473,10 +480,12 @@ class CoreCog(commands.Cog, name="Core"):
         return None
 
     @commands.hybrid_group()
+    @app_commands.guild_only()
     async def subscribe(self, _: commands.Context[DirectAnnouncerBot]) -> None:
         pass
 
     @subscribe.command(name="directs", aliases=["direct"])
+    @app_commands.guild_only()
     async def subscribe_directs(
         self,
         ctx: commands.Context[DirectAnnouncerBot],
@@ -557,6 +566,7 @@ class CoreCog(commands.Cog, name="Core"):
         return None
 
     @subscribe.command(name="pokemon")
+    @app_commands.guild_only()
     async def subscribe_pokemon(
         self,
         ctx: commands.Context[DirectAnnouncerBot],
@@ -637,10 +647,12 @@ class CoreCog(commands.Cog, name="Core"):
         return None
 
     @commands.hybrid_group()
+    @app_commands.guild_only()
     async def unsubscribe(self, _: commands.Context[DirectAnnouncerBot]) -> None:
         pass
 
     @unsubscribe.command(name="directs")
+    @app_commands.guild_only()
     async def unsubscribe_directs(
         self,
         ctx: commands.Context[DirectAnnouncerBot],
@@ -720,6 +732,7 @@ class CoreCog(commands.Cog, name="Core"):
         return None
 
     @unsubscribe.command(name="pokemon")
+    @app_commands.guild_only()
     async def unsubscribe_pokemon(
         self,
         ctx: commands.Context[DirectAnnouncerBot],
@@ -799,6 +812,7 @@ class CoreCog(commands.Cog, name="Core"):
         return None
 
     @commands.hybrid_command()
+    @app_commands.guild_only()
     async def upcoming(self, ctx: commands.Context[DirectAnnouncerBot]) -> None:
         """Show upcoming events, if any
 
