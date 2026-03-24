@@ -1,6 +1,8 @@
 import logging
 import sqlite3
 import textwrap
+from collections.abc import Generator
+from contextlib import closing, contextmanager
 from datetime import datetime
 from typing import NamedTuple
 
@@ -128,10 +130,20 @@ _INSERT_LOG_TIMESTAMP = "INSERT INTO logs (check_timestamp, event) VALUES (?, ?)
 # endregion
 
 
+@contextmanager
+def _open_db_cursor() -> Generator[sqlite3.Cursor]:
+    # deeply inspired by @petersutton on Discord
+    with (
+        closing(sqlite3.connect(_DB_FILE_NAME, autocommit=False)) as conn,
+        conn,  # in transaction, commits or rollbacks when context manager exits
+        closing(conn.cursor()) as cur,
+    ):
+        yield cur
+
+
 def bootstrap_db() -> None:
     try:
-        with sqlite3.connect(_DB_FILE_NAME) as conn:
-            cur = conn.cursor()
+        with _open_db_cursor() as cur:
             cur.execute(_CREATE_GUILDS_TABLE)
             cur.execute(_CREATE_LOGS_TABLE)
             cur.execute(_CREATE_TIMESTAMPS_TABLE)
@@ -148,10 +160,8 @@ class GuildDB:
     @staticmethod
     def add_guild(guild_id: int) -> None:
         try:
-            with sqlite3.connect(_DB_FILE_NAME) as conn:
-                cur = conn.cursor()
+            with _open_db_cursor() as cur:
                 cur.execute(_INSERT_OR_IGNORE_GUILD_WITH_ID_ONLY, (guild_id,))
-                conn.commit()
         except sqlite3.Error as e:
             _LOGGER.error("Error adding guild %d:", guild_id, exc_info=e)
 
@@ -165,8 +175,7 @@ class GuildDB:
             query = _SELECT_POKEMON_ENABLED_GUILDS
 
         try:
-            with sqlite3.connect(_DB_FILE_NAME) as conn:
-                cur = conn.cursor()
+            with _open_db_cursor() as cur:
                 cur.execute(query)
                 rows = cur.fetchall()
         except sqlite3.Error as e:
@@ -190,10 +199,8 @@ class GuildDB:
     @staticmethod
     def set_channel(guild_id: int, channel_id: int | None) -> None:
         try:
-            with sqlite3.connect(_DB_FILE_NAME) as conn:
-                cur = conn.cursor()
+            with _open_db_cursor() as cur:
                 cur.execute(_SET_PING_CHANNEL, (channel_id, guild_id))
-                conn.commit()
         except sqlite3.Error as e:
             _LOGGER.error(
                 "Error setting channel %d for guild %d:",
@@ -207,8 +214,7 @@ class GuildDB:
     @staticmethod
     def get_channel(guild_id: int) -> int | None:
         try:
-            with sqlite3.connect(_DB_FILE_NAME) as conn:
-                cur = conn.cursor()
+            with _open_db_cursor() as cur:
                 cur.execute(_SELECT_PING_CHANNEL, (guild_id,))
                 row = cur.fetchone()
         except sqlite3.Error as e:
@@ -232,10 +238,8 @@ class GuildDB:
         _LOGGER.debug("Query: %r", query)
 
         try:
-            with sqlite3.connect(_DB_FILE_NAME) as conn:
-                cur = conn.cursor()
+            with _open_db_cursor() as cur:
                 cur.execute(query, (role_id, guild_id))
-                conn.commit()
         except sqlite3.Error as e:
             _LOGGER.error(
                 "Error setting ping role %d for %r in guild %d",
@@ -256,8 +260,7 @@ class GuildDB:
         )
 
         try:
-            with sqlite3.connect(_DB_FILE_NAME) as conn:
-                cur = conn.cursor()
+            with _open_db_cursor() as cur:
                 cur.execute(query, (guild_id,))
                 row = cur.fetchone()
         except sqlite3.Error as e:
@@ -284,10 +287,8 @@ class GuildDB:
         )
 
         try:
-            with sqlite3.connect(_DB_FILE_NAME) as conn:
-                cur = conn.cursor()
+            with _open_db_cursor() as cur:
                 cur.execute(query, (pings_enabled, guild_id))
-                conn.commit()
         except sqlite3.Error as e:
             _LOGGER.error(
                 "Error setting pings state to %r for %r in %d",
@@ -308,8 +309,7 @@ class GuildDB:
         )
 
         try:
-            with sqlite3.connect(_DB_FILE_NAME) as conn:
-                cur = conn.cursor()
+            with _open_db_cursor() as cur:
                 cur.execute(query, (guild_id,))
                 row = cur.fetchone()
         except sqlite3.Error as e:
@@ -334,10 +334,8 @@ class EventDB:
         )
 
         try:
-            with sqlite3.connect(_DB_FILE_NAME) as conn:
-                cur = conn.cursor()
+            with _open_db_cursor() as cur:
                 cur.execute(query)
-                conn.commit()
         except sqlite3.Error as e:
             _LOGGER.error("Error deleting %r timestamp", event, exc_info=e)
             return False
@@ -353,8 +351,7 @@ class EventDB:
         )
 
         try:
-            with sqlite3.connect(_DB_FILE_NAME) as conn:
-                cur = conn.cursor()
+            with _open_db_cursor() as cur:
                 cur.execute(query)
                 row = cur.fetchone()
         except sqlite3.Error as e:
@@ -374,10 +371,8 @@ class EventDB:
         )
 
         try:
-            with sqlite3.connect(_DB_FILE_NAME) as conn:
-                cur = conn.cursor()
+            with _open_db_cursor() as cur:
                 cur.execute(query, (timestamp.isoformat(),))
-                conn.commit()
         except sqlite3.Error as e:
             _LOGGER.error(
                 "Error inserting %r timestamp (%r)",
@@ -393,13 +388,11 @@ class LogDB:
     @staticmethod
     def log_run(event: Events, dt: datetime) -> None:
         try:
-            with sqlite3.connect(_DB_FILE_NAME) as conn:
-                cur = conn.cursor()
+            with _open_db_cursor() as cur:
                 cur.execute(
                     _INSERT_LOG_TIMESTAMP,
                     (dt.isoformat(), event.to_str()),
                 )
-                conn.commit()
         except sqlite3.Error as e:
             _LOGGER.error(
                 "Error inserting log timestamp (%r)",
