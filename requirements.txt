@@ -14,7 +14,7 @@ aiosignal==1.4.0
     # via aiohttp
 apscheduler==3.11.2
     # via DirectAnnouncerBot (pyproject.toml)
-attrs==25.4.0
+attrs==26.1.0
     # via aiohttp
 audioop-lts==0.2.2
     # via discord-py

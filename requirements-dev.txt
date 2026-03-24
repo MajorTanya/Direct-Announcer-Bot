@@ -14,7 +14,7 @@ aiosignal==1.4.0
     # via aiohttp
 apscheduler==3.11.2
     # via DirectAnnouncerBot (pyproject.toml)
-attrs==25.4.0
+attrs==26.1.0
     # via aiohttp
 audioop-lts==0.2.2
     # via discord-py
@@ -32,7 +32,7 @@ discord-py==2.7.1
     # via DirectAnnouncerBot (pyproject.toml)
 distlib==0.4.0
     # via virtualenv
-filelock==3.25.0
+filelock==3.25.2
     # via
     #   python-discovery
     #   virtualenv
@@ -40,7 +40,7 @@ frozenlist==1.8.0
     # via
     #   aiohttp
     #   aiosignal
-identify==2.6.17
+identify==2.6.18
     # via pre-commit
 idna==3.11
     # via yarl
@@ -73,7 +73,7 @@ propcache==0.4.1
     #   yarl
 pyright==1.1.408
     # via DirectAnnouncerBot (pyproject.toml)
-python-discovery==1.1.0
+python-discovery==1.2.0
     # via virtualenv
 python-dotenv==1.2.2
     # via DirectAnnouncerBot (pyproject.toml)
@@ -91,7 +91,7 @@ tzdata==2025.3
     # via tzlocal
 tzlocal==5.3.1
     # via apscheduler
-virtualenv==21.1.0
+virtualenv==21.2.0
     # via pre-commit
 yarl==1.23.0
     # via aiohttp
