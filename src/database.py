@@ -235,8 +235,6 @@ class GuildDB:
             else _SET_POKEMON_PING_ROLE_ID
         )
 
-        _LOGGER.debug("Query: %r", query)
-
         try:
             with _open_db_cursor() as cur:
                 cur.execute(query, (role_id, guild_id))
