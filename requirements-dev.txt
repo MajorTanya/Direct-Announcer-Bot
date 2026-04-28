@@ -6,7 +6,7 @@
 #
 aiohappyeyeballs==2.6.1
     # via aiohttp
-aiohttp==3.13.3
+aiohttp==3.13.5
     # via
     #   DirectAnnouncerBot (pyproject.toml)
     #   discord-py
@@ -24,7 +24,7 @@ black==26.3.1
     # via DirectAnnouncerBot (pyproject.toml)
 cfgv==3.5.0
     # via pre-commit
-click==8.3.1
+click==8.3.3
     # via black
 colorama==0.4.6
     # via click
@@ -32,7 +32,7 @@ discord-py==2.7.1
     # via DirectAnnouncerBot (pyproject.toml)
 distlib==0.4.0
     # via virtualenv
-filelock==3.25.2
+filelock==3.29.0
     # via
     #   python-discovery
     #   virtualenv
@@ -40,9 +40,9 @@ frozenlist==1.8.0
     # via
     #   aiohttp
     #   aiosignal
-identify==2.6.18
+identify==2.6.19
     # via pre-commit
-idna==3.11
+idna==3.13
     # via yarl
 isort==8.0.1
     # via DirectAnnouncerBot (pyproject.toml)
@@ -56,24 +56,24 @@ nodeenv==1.10.0
     # via
     #   pre-commit
     #   pyright
-packaging==26.0
+packaging==26.2
     # via black
-pathspec==1.0.4
+pathspec==1.1.1
     # via black
-platformdirs==4.9.4
+platformdirs==4.9.6
     # via
     #   black
     #   python-discovery
     #   virtualenv
-pre-commit==4.5.1
+pre-commit==4.6.0
     # via DirectAnnouncerBot (pyproject.toml)
 propcache==0.4.1
     # via
     #   aiohttp
     #   yarl
-pyright==1.1.408
+pyright==1.1.409
     # via DirectAnnouncerBot (pyproject.toml)
-python-discovery==1.2.0
+python-discovery==1.2.2
     # via virtualenv
 python-dotenv==1.2.2
     # via DirectAnnouncerBot (pyproject.toml)
@@ -87,11 +87,11 @@ typing-extensions==4.15.0
     # via
     #   beautifulsoup4
     #   pyright
-tzdata==2025.3
+tzdata==2026.2
     # via tzlocal
 tzlocal==5.3.1
     # via apscheduler
-virtualenv==21.2.0
+virtualenv==21.3.0
     # via pre-commit
 yarl==1.23.0
     # via aiohttp
