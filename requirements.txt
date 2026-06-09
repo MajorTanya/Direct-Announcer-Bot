@@ -4,9 +4,9 @@
 #
 #    pip-compile --output-file=requirements.txt --strip-extras pyproject.toml
 #
-aiohappyeyeballs==2.6.1
+aiohappyeyeballs==2.6.2
     # via aiohttp
-aiohttp==3.13.5
+aiohttp==3.14.1
     # via
     #   DirectAnnouncerBot (pyproject.toml)
     #   discord-py
@@ -18,7 +18,7 @@ attrs==26.1.0
     # via aiohttp
 audioop-lts==0.2.2
     # via discord-py
-beautifulsoup4==4.14.3
+beautifulsoup4==4.15.0
     # via DirectAnnouncerBot (pyproject.toml)
 discord-py==2.7.1
     # via DirectAnnouncerBot (pyproject.toml)
@@ -26,7 +26,7 @@ frozenlist==1.8.0
     # via
     #   aiohttp
     #   aiosignal
-idna==3.15
+idna==3.18
     # via yarl
 multidict==6.7.1
     # via
@@ -38,7 +38,7 @@ propcache==0.5.2
     #   yarl
 python-dotenv==1.2.2
     # via DirectAnnouncerBot (pyproject.toml)
-soupsieve==2.8.3
+soupsieve==2.8.4
     # via beautifulsoup4
 typing-extensions==4.15.0
     # via beautifulsoup4
@@ -46,5 +46,5 @@ tzdata==2026.2
     # via tzlocal
 tzlocal==5.3.1
     # via apscheduler
-yarl==1.23.0
+yarl==1.24.2
     # via aiohttp
