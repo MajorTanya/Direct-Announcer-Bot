@@ -2,12 +2,12 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.4.2
+    rev: v2.4.3
     hooks:
       - id: codespell
 
   - repo: https://github.com/thlorenz/doctoc
-    rev: v2.4.1
+    rev: v2.5.0
     hooks:
       - id: doctoc
         args: [ README.md, --notitle, --minlevel, "2", --github ]
@@ -46,7 +46,7 @@ repos:
         language_version: python3.14
 
   - repo: https://github.com/jazzband/pip-tools
-    rev: v7.5.3
+    rev: v7.6.0
     hooks:
       - id: pip-compile
         name: pip-compile requirements-dev.txt
