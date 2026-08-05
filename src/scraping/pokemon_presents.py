@@ -38,21 +38,24 @@ async def _scrape_bulbapedia() -> datetime:
 
     soup = BeautifulSoup(body, "html.parser")
 
-    toc = soup.find(id="toc")
+    toc = soup.find(id="bvTOC")
     assert toc is not None
 
     found_newest = False
     latest_a_tag = None
+    # needed to find the latest event
+    # can't be truly const since the bot _could_ run across year boundaries
+    current_year = datetime.now().year
     for li in toc.find_all("li")[::-1]:
         if found_newest:
             break
-        spans = li.find_all("span", class_="tocnumber")
-        for span in spans:
-            # actual presents headings are subpoints of the year they aired in
-            # (e.g. 2026 is span 13, first Presents in 2026 is span 13.1, etc)
-            if span.string is not None and "." in span.string:
+        a_tags = li.find_all("a")
+        for a in a_tags:
+            # events are grouped by year and then by date - assume the latest link with
+            # a ", [year]" fragment (e.g. "February 27, 2026") is the latest Presents
+            if a.string is not None and f", {current_year}" in a.string:
                 found_newest = True
-                latest_a_tag = span.find_parent()
+                latest_a_tag = a
                 break
 
     assert latest_a_tag is not None
