@@ -34,7 +34,7 @@ repos:
       - id: add-trailing-comma
 
   - repo: https://github.com/pycqa/isort
-    rev: 8.0.1
+    rev: 9.0.1
     hooks:
       - id: isort
         args: [ --profile, black, --filter-files ]
@@ -46,7 +46,7 @@ repos:
         language_version: python3.14
 
   - repo: https://github.com/jazzband/pip-tools
-    rev: v7.6.0
+    rev: v7.6.1
     hooks:
       - id: pip-compile
         name: pip-compile requirements-dev.txt
