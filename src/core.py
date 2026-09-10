@@ -14,8 +14,8 @@ from config.config_data import DEV_GUILD, DEV_ID
 from src.bot import DirectAnnouncerBot
 from src.database import EventDB, GuildDB, LogDB
 from src.events import Events
-from src.scraping.nintendo_direct import get_next_nintendo_direct
-from src.scraping.pokemon_presents import get_next_pokemon_presents
+from src.scraping.nintendo_direct import get_upcoming_nintendo_directs
+from src.scraping.pokemon_presents import get_upcoming_pokemon_presents
 from src.scraping.scraper_exceptions import ParseException, ScrapeException
 from src.util import MENTION_ROLES, NO_MENTIONS_AT_ALL
 
@@ -90,6 +90,10 @@ def _notify_for_event(
     return None
 
 
+def _format_dt(dt: datetime) -> str:
+    return f"{format_dt(dt, style="F")} ({format_dt(dt, style="R")})"
+
+
 class CoreCog(commands.Cog, name="Core"):
 
     def __init__(self, bot: DirectAnnouncerBot):
@@ -112,7 +116,7 @@ class CoreCog(commands.Cog, name="Core"):
         dt: datetime,
         event: Events,
     ) -> None:
-        current_job = self.scheduler.get_job(event.to_job_id())
+        current_job = self.scheduler.get_job(event.to_job_id(dt))
         assert isinstance(current_job, Job) or current_job is None
         if (current_job is None) or (current_job.next_run_time != dt):
             _LOGGER.debug("Scheduling job: %r for %r", event, dt.isoformat())
@@ -124,7 +128,7 @@ class CoreCog(commands.Cog, name="Core"):
                     "event": event,
                     "dt": dt,
                 },
-                id=event.to_job_id(),
+                id=event.to_job_id(dt),
                 name=f"{event.to_display_str()} Notification Job",
                 misfire_grace_time=60,
                 replace_existing=True,
@@ -134,16 +138,16 @@ class CoreCog(commands.Cog, name="Core"):
     @tasks.loop(hours=6)
     async def scraper_task(self) -> None:
         try:
-            next_direct_dt = await get_next_nintendo_direct()
-            if next_direct_dt is not None:
-                self._schedule_notification(next_direct_dt, Events.DIRECT)
+            upcoming_directs = await get_upcoming_nintendo_directs()
+            for dt in upcoming_directs:
+                self._schedule_notification(dt, Events.DIRECT)
         except (ScrapeException, ParseException) as e:
             _LOGGER.error(e.msg)
 
         try:
-            next_pokemon_dt = await get_next_pokemon_presents()
-            if next_pokemon_dt is not None:
-                self._schedule_notification(next_pokemon_dt, Events.POKEMON)
+            upcoming_presents = await get_upcoming_pokemon_presents()
+            for dt in upcoming_presents:
+                self._schedule_notification(dt, Events.POKEMON)
         except (ScrapeException, ParseException) as e:
             _LOGGER.error(e.msg)
 
@@ -827,35 +831,26 @@ class CoreCog(commands.Cog, name="Core"):
 
         now = datetime.now(UTC)
 
-        direct_dt = EventDB.get_event_timestamp(Events.DIRECT)
-        pokemon_dt = EventDB.get_event_timestamp(Events.POKEMON)
+        direct_events = EventDB.get_events(Events.DIRECT)
+        pokemon_events = EventDB.get_events(Events.POKEMON)
 
-        direct_msg = ""
-        if direct_dt is not None and direct_dt > now:
-            # Discord does automatic list numbering even if everything is "1."
-            direct_msg = (
-                f"1. **Nintendo Direct** on {format_dt(direct_dt, style="F")} "
-                f"({format_dt(direct_dt, style="R")})"
-            )
+        msgs: list[str] = []
 
-        pokemon_msg = ""
-        if pokemon_dt is not None and pokemon_dt > now:
-            # Discord does automatic list numbering even if everything is "1."
-            pokemon_msg = (
-                f"1. **Pokémon Presents** on {format_dt(pokemon_dt, style="F")} "
-                f"({format_dt(pokemon_dt, style="R")})"
-            )
+        if direct_events is not None and len(direct_events) > 0:
+            for direct_dt in direct_events:
+                if direct_dt > now:
+                    msgs.append(f"**Nintendo Direct** on {_format_dt(direct_dt)}")
 
-        if direct_dt is not None and pokemon_dt is not None:
-            if direct_dt < pokemon_dt:
-                msg = f"{direct_msg}\n{pokemon_msg}"
-            else:
-                msg = f"{pokemon_msg}\n{direct_msg}"
-        else:
-            msg = f"{direct_msg}\n{pokemon_msg}"
+        if pokemon_events is not None and len(pokemon_events) > 0:
+            for pokemon_dt in pokemon_events:
+                if pokemon_dt > now:
+                    msgs.append(f"**Pokémon Presents** on {_format_dt(pokemon_dt)}")
 
-        if msg.strip() == "":
+        if len(msgs) == 0:
             msg = "None at this time"
+        else:
+            # Discord does automatic list numbering even if everything is "1."
+            msg = f"1. {"\n1. ".join(msgs)}"
 
         out = (
             f"__Upcoming Events__\n\n"
@@ -874,11 +869,11 @@ class CoreCog(commands.Cog, name="Core"):
         jobs: list[Job] = self.scheduler.get_jobs()
         jobs.sort(key=lambda j: j.next_run_time)
         job_strs: list[str] = []
-        for job in jobs:
+        for idx, job in enumerate(jobs, start=1):
             run_dt: datetime = job.next_run_time
             job_strs.append(
                 (
-                    f"1. Scheduled job `{job.id}`:\n"
+                    f"{idx}. Scheduled job `{job.id}`:\n"
                     f"  Name: `{job.name}`\n"
                     f"  Next run time: `{run_dt.isoformat()}` "
                     f"({format_dt(run_dt, style="s")}) ({format_dt(run_dt, style="R")})"

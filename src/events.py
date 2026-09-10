@@ -1,4 +1,5 @@
 import enum
+from datetime import datetime
 from typing import assert_never
 
 
@@ -25,11 +26,11 @@ class Events(enum.Enum):
         else:
             assert_never(self)
 
-    def to_job_id(self) -> str:
+    def to_job_id(self, dt: datetime) -> str:
         if self is Events.DIRECT:
-            return f"{self.to_str()}_notify"
+            return f"{self.to_str()}_notify_{dt.date().isoformat()}"
         elif self is Events.POKEMON:
-            return f"{self.to_str()}_notify"
+            return f"{self.to_str()}_notify_{dt.date().isoformat()}"
         else:
             assert_never(self)
 
