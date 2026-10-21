@@ -15,7 +15,6 @@ from src.bot import DirectAnnouncerBot
 from src.database import EventDB, GuildDB, LogDB
 from src.events import Events
 from src.scraping.nintendo_direct import get_upcoming_nintendo_directs
-from src.scraping.pokemon_presents import get_upcoming_pokemon_presents
 from src.scraping.scraper_exceptions import ParseException, ScrapeException
 from src.util import MENTION_ROLES, NO_MENTIONS_AT_ALL
 
@@ -144,12 +143,7 @@ class CoreCog(commands.Cog, name="Core"):
         except (ScrapeException, ParseException) as e:
             _LOGGER.error(e.msg)
 
-        try:
-            upcoming_presents = await get_upcoming_pokemon_presents()
-            for dt in upcoming_presents:
-                self._schedule_notification(dt, Events.POKEMON)
-        except (ScrapeException, ParseException) as e:
-            _LOGGER.error(e.msg)
+        _LOGGER.info("Skipping Bulbapedia scrape due to Cloudflare")
 
     @scraper_task.before_loop
     async def before_scraper_task(self) -> None:
