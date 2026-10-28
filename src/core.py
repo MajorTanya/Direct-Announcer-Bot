@@ -170,7 +170,10 @@ class CoreCog(commands.Cog, name="Core"):
         except (ScrapeException, ParseException) as e:
             _LOGGER.error(e.msg)
 
-        _LOGGER.info("Skipping Bulbapedia scrape due to Cloudflare")
+        upcoming_presents = EventDB.get_events(Events.POKEMON)
+        if upcoming_presents is not None:
+            for dt in upcoming_presents:
+                self._schedule_notification(dt, Events.POKEMON)
 
     @scraper_task.before_loop
     async def before_scraper_task(self) -> None:
