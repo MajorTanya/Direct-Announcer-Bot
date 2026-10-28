@@ -18,8 +18,6 @@ attrs==26.1.0
     # via aiohttp
 audioop-lts==0.2.2
     # via discord-py
-beautifulsoup4==4.15.0
-    # via DirectAnnouncerBot (pyproject.toml)
 black==26.10.1
     # via DirectAnnouncerBot (pyproject.toml)
 cfgv==3.5.0
@@ -82,12 +80,8 @@ pytokens==0.4.1
     # via black
 pyyaml==6.0.3
     # via pre-commit
-soupsieve==3.0.3
-    # via beautifulsoup4
 typing-extensions==4.16.0
-    # via
-    #   beautifulsoup4
-    #   pyright
+    # via pyright
 tzdata==2026.5
     # via tzlocal
 tzlocal==5.4.4
