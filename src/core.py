@@ -1,6 +1,6 @@
 import logging
 from datetime import UTC, datetime, timedelta
-from typing import override
+from typing import Literal, override
 
 import discord
 from apscheduler.job import Job
@@ -22,6 +22,33 @@ _POKEMON_YT_CHANNEL = "https://www.youtube.com/@pokemon/videos"
 _NINTENDO_YT_CHANNEL = "https://www.youtube.com/@NintendoAmerica/videos"
 _INTERNAL_NOTIFICATION_OFFSET = timedelta(minutes=5)
 _LOGGER = logging.getLogger(f"dabot.{__name__}")
+
+
+class EditConfirmationView(discord.ui.View):
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.confirmed: bool | None = None
+
+    @discord.ui.button(label="Confirm", style=discord.ButtonStyle.green)
+    async def confirm(
+        self,
+        interaction: discord.Interaction[discord.Client],
+        _: discord.ui.Button[EditConfirmationView],
+    ) -> None:
+        await interaction.response.send_message("Confirmed", ephemeral=True)
+        self.confirmed = True
+        self.stop()
+
+    @discord.ui.button(label="Cancel", style=discord.ButtonStyle.red)
+    async def cancel(
+        self,
+        interaction: discord.Interaction[discord.Client],
+        _: discord.ui.Button[EditConfirmationView],
+    ) -> None:
+        await interaction.response.send_message("Cancelled", ephemeral=True)
+        self.confirmed = False
+        self.stop()
 
 
 def _notify_for_event(
@@ -890,6 +917,65 @@ class CoreCog(commands.Cog, name="Core"):
         self.scraper_task.restart()
 
         await ctx.reply("Background task restarted successfully.")
+        return None
+
+    @commands.hybrid_command()
+    @app_commands.guild_only()
+    @app_commands.guilds(DEV_GUILD)
+    async def schedule(
+        self,
+        ctx: commands.Context[DirectAnnouncerBot],
+        kind: Literal["direct", "pokemon"],
+        timestamp: int,
+    ) -> None:
+        if ctx.author.id != DEV_ID or ctx.guild is None or ctx.guild.id != DEV_GUILD:
+            return None
+
+        kind_str = kind.casefold()
+        if kind_str == "direct":
+            event = Events.DIRECT
+        elif kind_str == "pokemon":
+            event = Events.POKEMON
+        else:
+            await ctx.reply(f"Unknown event {kind!r}")
+            return None
+
+        event_dt = datetime.fromtimestamp(timestamp, UTC)
+        if datetime.now(UTC) > event_dt:
+            await ctx.reply("New events must be in the future!")
+            return None
+
+        formatted_dt = format_dt(event_dt, style="S")
+
+        confirmation_view = EditConfirmationView()
+        msg = await ctx.reply(
+            f"Is this {event.to_display_str()} date correct?\n\n{formatted_dt}",
+            view=confirmation_view,
+        )
+
+        await confirmation_view.wait()
+        if confirmation_view.confirmed is None:
+            await msg.edit(view=None)
+            return None
+        elif not confirmation_view.confirmed:
+            await msg.edit(content=f"{msg.content}\n\nCancelled.", view=None)
+            return None
+
+        stored_events = EventDB.get_events(event)
+        if stored_events is not None and event_dt in stored_events:
+            await msg.edit(
+                content=f"A {event} is already scheduled for {formatted_dt}.",
+                view=None,
+            )
+            return None
+
+        EventDB.store_event(event, event_dt)
+        self._schedule_notification(event_dt, event=event)
+
+        await msg.edit(
+            content=f"Scheduled {event.to_display_str()} for {formatted_dt}.",
+            view=None,
+        )
         return None
 
 
