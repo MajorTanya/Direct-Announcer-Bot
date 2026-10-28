@@ -42,7 +42,7 @@ idna==3.20
     # via yarl
 isort==9.0.2
     # via DirectAnnouncerBot (pyproject.toml)
-multidict==7.1.0
+multidict==7.2.1
     # via
     #   aiohttp
     #   yarl
@@ -60,7 +60,7 @@ packaging==26.3
     #   virtualenv
 pathspec==1.1.1
     # via black
-platformdirs==4.13.5
+platformdirs==4.14.0
     # via
     #   black
     #   virtualenv
@@ -72,7 +72,7 @@ propcache==0.5.4
     #   yarl
 pyright==1.1.414
     # via DirectAnnouncerBot (pyproject.toml)
-python-discovery==1.6.4
+python-discovery==1.6.7
     # via virtualenv
 python-dotenv==1.2.4
     # via DirectAnnouncerBot (pyproject.toml)
@@ -82,11 +82,11 @@ pyyaml==6.0.3
     # via pre-commit
 typing-extensions==4.16.0
     # via pyright
-tzdata==2026.5
+tzdata==2026.6
     # via tzlocal
-tzlocal==5.4.4
+tzlocal==5.4.5
     # via apscheduler
-virtualenv==21.14.12
+virtualenv==21.15.1
     # via pre-commit
 yarl==1.25.1
     # via aiohttp

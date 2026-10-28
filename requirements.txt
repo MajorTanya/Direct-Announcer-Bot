@@ -26,7 +26,7 @@ frozenlist==1.8.0
     #   aiosignal
 idna==3.20
     # via yarl
-multidict==7.1.0
+multidict==7.2.1
     # via
     #   aiohttp
     #   yarl
@@ -36,9 +36,9 @@ propcache==0.5.4
     #   yarl
 python-dotenv==1.2.4
     # via DirectAnnouncerBot (pyproject.toml)
-tzdata==2026.5
+tzdata==2026.6
     # via tzlocal
-tzlocal==5.4.4
+tzlocal==5.4.5
     # via apscheduler
 yarl==1.25.1
     # via aiohttp
