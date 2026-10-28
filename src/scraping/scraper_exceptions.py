@@ -5,7 +5,7 @@ class ScrapeException(Exception):
 
     def __init__(
         self,
-        source: Literal["Bulbapedia", "Sunappu"],
+        source: Literal["Sunappu"],
         status: int,
         raw_payload: bytes,
     ) -> None:
@@ -18,6 +18,6 @@ class ScrapeException(Exception):
 
 class ParseException(Exception):
 
-    def __init__(self, source: Literal["Bulbapedia", "Sunappu"], context: str) -> None:
+    def __init__(self, source: Literal["Sunappu"], context: str) -> None:
         self.msg = f"Could not parse {source} response. {context}"
         super().__init__()
