@@ -54,13 +54,12 @@ async def _scrape_sunappu_rss() -> list[datetime]:
 
     upcoming_dts: list[datetime] = []
     for item in channel.iterfind("item"):
-        title = item.find("title")
-        if title is None or title.text is None:
-            raise ParseException("Sunappu", "'title' not found or text was None")
+        pubDate = item.find("pubDate")
+        if pubDate is None or pubDate.text is None:
+            raise ParseException("Sunappu", "'pubDate' not found or text was None")
 
-        direct_date = title.text
-        dt = datetime.strptime(direct_date, "%B %d, %Y %I:%M %p %Z")
-        dt = dt.replace(tzinfo=UTC)
+        direct_date = pubDate.text
+        dt = datetime.strptime(direct_date, "%a, %d %b %Y %H:%M:%S %z")
 
         if now > dt:
             # events are ordered newest -> oldest, so if this is in the past, stop
